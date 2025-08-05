@@ -24,9 +24,9 @@ export const registerUser = async (
 export const loginUser = async (formData: LoginFormData) => {
   try {
     const {
-      data: { message },
+      data: { token },
     } = await api.post(`/auth/login`, formData);
-    toast.success(message);
+    localStorage.setItem("AUTH_TOKEN", token);
   } catch (error) {
     if (isAxiosError(error)) {
       toast.error(error.response?.data.message);
