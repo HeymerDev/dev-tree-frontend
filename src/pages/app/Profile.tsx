@@ -1,6 +1,28 @@
+import { useForm } from "react-hook-form";
+import { ErrorMessage } from "../../components/messages/ErrorMessge";
+
 const Profile = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      handle: "",
+      description: "",
+      image: null,
+    },
+  });
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+  };
+
   return (
-    <form className="bg-white p-10 rounded-lg space-y-5" onSubmit={() => {}}>
+    <form
+      className="bg-white p-10 rounded-lg space-y-5"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <legend className="text-2xl text-slate-800 text-center">
         Editar Información
       </legend>
@@ -10,7 +32,11 @@ const Profile = () => {
           type="text"
           className="border-none bg-slate-100 rounded-lg p-2"
           placeholder="handle o Nombre de Usuario"
+          {...register("handle", { required: true })}
         />
+        {errors.handle && (
+          <ErrorMessage>{errors.handle.message as string}</ErrorMessage>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-2">
@@ -18,7 +44,11 @@ const Profile = () => {
         <textarea
           className="border-none bg-slate-100 rounded-lg p-2"
           placeholder="Tu Descripción"
+          {...register("description")}
         />
+        {errors.description && (
+          <ErrorMessage>{errors.description.message as string}</ErrorMessage>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-2">
