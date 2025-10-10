@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router"; // Asegúrate de usar react-router-dom
+import { createBrowserRouter } from "react-router";
 import Login from "./pages/auth/Login";
 import AuthLayout from "./layouts/AuthLayout";
 import Register from "./pages/auth/Register";

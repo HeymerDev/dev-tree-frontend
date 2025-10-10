@@ -1,21 +1,38 @@
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "../../components/messages/ErrorMessge";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import type { EditProfileFormData, User } from "../../types";
+import { updateUser } from "../../api/dashboard";
+import { toast } from "sonner";
 
 const Profile = () => {
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData<User>(["user"]);
+
+  const updateUserMutation = useMutation({
+    mutationFn: updateUser,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      toast.success(data?.message);
+    },
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<EditProfileFormData>({
     defaultValues: {
-      handle: "",
-      description: "",
-      image: null,
+      handle: data?.handle || "",
+      description: data?.description || "",
     },
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = (formData: EditProfileFormData) => {
+    updateUserMutation.mutate(formData);
   };
 
   return (
@@ -32,7 +49,7 @@ const Profile = () => {
           type="text"
           className="border-none bg-slate-100 rounded-lg p-2"
           placeholder="handle o Nombre de Usuario"
-          {...register("handle", { required: true })}
+          {...register("handle", { required: "El handle es obligatorio" })}
         />
         {errors.handle && (
           <ErrorMessage>{errors.handle.message as string}</ErrorMessage>
