@@ -39,7 +39,22 @@ export const Links = ({ user }: { user: User }) => {
             <div className="flex-1 ">
               <Outlet />
             </div>
-            <div className="w-full md:w-96 bg-slate-800 px-5 py-10 space-y-6"></div>
+            <div className="w-full md:w-96 bg-slate-800 px-5 py-10 space-y-6">
+              <p className="text-4xl text-center text-white font-semibold">
+                {user.handle}
+              </p>
+              {user.imageUrl && (
+                <img
+                  src={user.imageUrl}
+                  alt="profile Image"
+                  className="mx-auto max-w-[250px]"
+                />
+              )}
+
+              <p className="text-center text-lg font-normal text-white">
+                {user.description}
+              </p>
+            </div>
           </div>
         </main>
       </div>

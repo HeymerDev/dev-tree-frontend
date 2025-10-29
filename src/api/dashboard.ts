@@ -25,3 +25,16 @@ export const updateUser = async (formData: EditProfileFormData) => {
     }
   }
 };
+
+export const uploadProfileImage = async (image: File) => {
+  const formData = new FormData();
+  formData.append("file", image);
+  try {
+    const { data } = await api.post("/user/image", formData);
+    return data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw new Error(error.response?.data.message);
+    }
+  }
+};

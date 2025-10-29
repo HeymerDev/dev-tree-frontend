@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { ErrorMessage } from "../../components/messages/ErrorMessge";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import type { EditProfileFormData, User } from "../../types";
-import { updateUser } from "../../api/dashboard";
+import { updateUser, uploadProfileImage } from "../../api/dashboard";
 import { toast } from "sonner";
 
 const Profile = () => {
@@ -20,6 +20,23 @@ const Profile = () => {
     },
   });
 
+  const uploadImageMutation = useMutation({
+    mutationFn: uploadProfileImage,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(["user"], (prev: User) => {
+        return {
+          ...prev,
+          imageUrl: data.imageUrl,
+        };
+      });
+
+      toast.success(data?.message);
+    },
+  });
+
   const {
     register,
     handleSubmit,
@@ -33,6 +50,12 @@ const Profile = () => {
 
   const onSubmit = (formData: EditProfileFormData) => {
     updateUserMutation.mutate(formData);
+  };
+
+  const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      uploadImageMutation.mutate(e.target.files[0]);
+    }
   };
 
   return (
@@ -76,7 +99,7 @@ const Profile = () => {
           name="handle"
           className="border-none bg-slate-100 rounded-lg p-2"
           accept="image/*"
-          onChange={() => {}}
+          onChange={handleChangeImage}
         />
       </div>
 
