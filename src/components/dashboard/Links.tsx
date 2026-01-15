@@ -1,9 +1,14 @@
 import { Link, Outlet } from "react-router";
 import NavigationTabs from "../navigation/Tabs";
-import type { User } from "../../types";
+import type { SocialNetwork, User } from "../../types";
 import { Toaster } from "sonner";
+import { useState } from "react";
 
 export const Links = ({ user }: { user: User }) => {
+  const [enabledLinks, setEnabledLinks] = useState<SocialNetwork[]>(
+    JSON.parse(user.links).filter((link: SocialNetwork) => link.enabled)
+  );
+
   return (
     <>
       <header className="bg-slate-800 py-5">
@@ -54,6 +59,20 @@ export const Links = ({ user }: { user: User }) => {
               <p className="text-center text-lg font-normal text-white">
                 {user.description}
               </p>
+
+              <section className="mt-20 flex flex-col gap-5 ">
+                {enabledLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="bg-white text-slate-800 text-center p-3 rounded-lg font-bold block"
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </section>
             </div>
           </div>
         </main>

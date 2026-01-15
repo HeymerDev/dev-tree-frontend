@@ -49,7 +49,11 @@ const Profile = () => {
   });
 
   const onSubmit = (formData: EditProfileFormData) => {
-    updateUserMutation.mutate(formData);
+    const user = queryClient.getQueryData<User>(["user"]);
+    if (!user) return;
+    user.description = formData.description;
+    user.handle = formData.handle;
+    updateUserMutation.mutate(user);
   };
 
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
