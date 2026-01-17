@@ -2,12 +2,19 @@ import { Link, Outlet } from "react-router";
 import NavigationTabs from "../navigation/Tabs";
 import type { SocialNetwork, User } from "../../types";
 import { Toaster } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { SocialLinks } from "../links/SocialLinks";
 
 export const Links = ({ user }: { user: User }) => {
   const [enabledLinks, setEnabledLinks] = useState<SocialNetwork[]>(
-    JSON.parse(user.links).filter((link: SocialNetwork) => link.enabled)
+    JSON.parse(user.links).filter((link: SocialNetwork) => link.enabled),
   );
+
+  useEffect(() => {
+    setEnabledLinks(
+      JSON.parse(user.links).filter((link: SocialNetwork) => link.enabled),
+    );
+  }, [user]);
 
   return (
     <>
@@ -60,17 +67,9 @@ export const Links = ({ user }: { user: User }) => {
                 {user.description}
               </p>
 
-              <section className="mt-20 flex flex-col gap-5 ">
+              <section className="mt-2 flex flex-col gap-5 ">
                 {enabledLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.url}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="bg-white text-slate-800 text-center p-3 rounded-lg font-bold block"
-                  >
-                    {link.name}
-                  </a>
+                  <SocialLinks key={link.name} link={link} />
                 ))}
               </section>
             </div>
