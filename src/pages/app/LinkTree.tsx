@@ -25,7 +25,7 @@ const LinkTree = () => {
   useEffect(() => {
     const updateData = links.map((item) => {
       const userLinks = JSON.parse(user.links).find(
-        (link: SocialNetwork) => link.name === item.name
+        (link: SocialNetwork) => link.name === item.name,
       );
       if (userLinks) {
         return { ...item, url: userLinks.url, enabled: userLinks.enabled };
@@ -37,16 +37,12 @@ const LinkTree = () => {
 
   const handleUrlChange = (name: string, url: string) => {
     const updatedLinks = links.map((link) =>
-      link.name === name ? { ...link, url } : link
+      link.name === name ? { ...link, url } : link,
     );
     setLinks(updatedLinks);
-    queryClient.setQueryData(["user"], (prevUser: User) => {
-      return {
-        ...prevUser,
-        links: JSON.stringify(updatedLinks),
-      };
-    });
   };
+
+  const linksItems: SocialNetwork[] = JSON.parse(user.links);
 
   const handleEnableLink = (socialName: string) => {
     const updatedLinks = links.map((link) => {
@@ -62,10 +58,23 @@ const LinkTree = () => {
 
     setLinks(updatedLinks);
 
+    let updatedItems: SocialNetwork[] = [];
+    const selectedSocialName = updatedLinks.find(
+      (link) => link.name === socialName,
+    );
+
+    if (selectedSocialName?.enabled) {
+      const newItem = { ...selectedSocialName, id: linksItems.length + 1 };
+      updatedItems = [...linksItems, newItem];
+    } else {
+      updatedItems = linksItems.filter((link) => link.name !== socialName);
+    }
+
+    //Almacenar en BD y cache
     queryClient.setQueryData(["user"], (prevUser: User) => {
       return {
         ...prevUser,
-        links: JSON.stringify(updatedLinks),
+        links: JSON.stringify(updatedItems),
       };
     });
   };

@@ -24,7 +24,7 @@ export type EditProfileResponse = {
 };
 
 export type SocialNetwork = {
-  id: string;
+  id: number;
   name: string;
   url: string;
   enabled: boolean;
