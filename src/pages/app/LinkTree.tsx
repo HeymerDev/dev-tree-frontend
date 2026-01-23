@@ -44,6 +44,7 @@ const LinkTree = () => {
 
   const linksItems: SocialNetwork[] = JSON.parse(user.links);
 
+  //setiar links en BD Y UI
   const handleEnableLink = (socialName: string) => {
     const updatedLinks = links.map((link) => {
       if (link.name === socialName) {
@@ -64,10 +65,42 @@ const LinkTree = () => {
     );
 
     if (selectedSocialName?.enabled) {
-      const newItem = { ...selectedSocialName, id: linksItems.length + 1 };
-      updatedItems = [...linksItems, newItem];
+      const id = linksItems.filter((link) => link.id).length + 1;
+      if (linksItems.some((link) => link.name === socialName)) {
+        updatedItems = linksItems.map((item) => {
+          if (item.name === socialName) {
+            return { ...item, id, enabled: true };
+          } else {
+            return item;
+          }
+        });
+      } else {
+        const newItem = { ...selectedSocialName, id };
+        updatedItems = [...linksItems, newItem];
+      }
     } else {
-      updatedItems = linksItems.filter((link) => link.name !== socialName);
+      const existingLinkIndex = linksItems.findIndex(
+        (link) => link.name === socialName,
+      );
+
+      if (existingLinkIndex !== -1) {
+        // Si existe, actualízalo
+        updatedItems = linksItems.map((item) => {
+          if (item.name === socialName) {
+            return { ...item, id: 0, enabled: false };
+          } else if (
+            item.id > linksItems[existingLinkIndex].id &&
+            linksItems[existingLinkIndex].id !== 0
+          ) {
+            return { ...item, id: item.id - 1 };
+          } else {
+            return item;
+          }
+        });
+      } else {
+        // Si NO existe, NO lo agregues, solo mantén los items actuales
+        updatedItems = linksItems;
+      }
     }
 
     //Almacenar en BD y cache
