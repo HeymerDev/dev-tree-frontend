@@ -2,6 +2,12 @@ import { Link, Outlet } from "react-router";
 import NavigationTabs from "../navigation/Tabs";
 import type { SocialNetwork, User } from "../../types";
 import { Toaster } from "sonner";
+import { DndContext, type DragEndEvent, closestCenter } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
 import { SocialLinks } from "../links/SocialLinks";
 
@@ -15,6 +21,8 @@ export const Links = ({ user }: { user: User }) => {
       JSON.parse(user.links).filter((link: SocialNetwork) => link.enabled),
     );
   }, [user]);
+
+  const handleDragEnd = (event: DragEndEvent) => {};
 
   return (
     <>
@@ -67,11 +75,21 @@ export const Links = ({ user }: { user: User }) => {
                 {user.description}
               </p>
 
-              <section className="mt-2 flex flex-col gap-5 ">
-                {enabledLinks.map((link) => (
-                  <SocialLinks key={link.name} link={link} />
-                ))}
-              </section>
+              <DndContext
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <section className="mt-2 flex flex-col gap-5 ">
+                  <SortableContext
+                    items={enabledLinks}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    {enabledLinks.map((link) => (
+                      <SocialLinks key={link.name} link={link} />
+                    ))}
+                  </SortableContext>
+                </section>
+              </DndContext>
             </div>
           </div>
         </main>
