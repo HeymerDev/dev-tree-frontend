@@ -13,6 +13,17 @@ export const getUser = async () => {
   }
 };
 
+export const getUserByHandle = async (handle: string) => {
+  try {
+    const { data } = await api.get<User>(`/${handle}`);
+    return data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw new Error(error.response?.data.message);
+    }
+  }
+};
+
 export const updateUser = async (formData: User) => {
   try {
     const { data } = await api.patch<EditProfileResponse>(`/user`, formData);
