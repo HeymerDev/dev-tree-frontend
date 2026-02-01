@@ -5,6 +5,7 @@ import Register from "./pages/auth/Register";
 import AppLayout from "./layouts/AppLayout";
 import Profile from "./pages/app/Profile";
 import LinkTree from "./pages/app/LinkTree";
+import { PublicView } from "./pages/publics/Profile";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,16 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+    ],
+  },
+  {
+    path: "/:handle",
+    element: <AuthLayout />,
+    children: [
+      {
+        index: true,
+        element: <PublicView />,
       },
     ],
   },

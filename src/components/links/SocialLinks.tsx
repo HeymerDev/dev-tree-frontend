@@ -15,7 +15,7 @@ export const SocialLinks = ({ link }: { link: SocialNetwork }) => {
   return (
     <li
       style={style}
-      className="bg-white px-5 py-2 flex items-center gap-5 rounded-lg"
+      className="bg-white px-5 py-2 flex items-center gap-5 rounded-lg cursor-pointer"
       ref={setNodeRef}
       {...attributes}
       {...listeners}

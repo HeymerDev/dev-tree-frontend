@@ -10,11 +10,14 @@ import {
 } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
 import { SocialLinks } from "../links/SocialLinks";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Links = ({ user }: { user: User }) => {
   const [enabledLinks, setEnabledLinks] = useState<SocialNetwork[]>(
     JSON.parse(user.links).filter((link: SocialNetwork) => link.enabled),
   );
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     setEnabledLinks(
@@ -22,7 +25,29 @@ export const Links = ({ user }: { user: User }) => {
     );
   }, [user]);
 
-  const handleDragEnd = (event: DragEndEvent) => {};
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+
+    const disabledLinks: SocialNetwork[] = JSON.parse(user.links).filter(
+      (link: SocialNetwork) => !link.enabled,
+    );
+
+    const prevIndex = enabledLinks.findIndex((link) => link.id === active.id);
+    const nextIndex = enabledLinks.findIndex((link) => link.id === over.id);
+
+    const order = arrayMove(enabledLinks, prevIndex, nextIndex);
+    setEnabledLinks(order);
+
+    const links = [...order, ...disabledLinks];
+
+    queryClient.setQueryData(["user"], (prevData: User) => {
+      return {
+        ...prevData,
+        links: JSON.stringify(links),
+      };
+    });
+  };
 
   return (
     <>
@@ -47,7 +72,7 @@ export const Links = ({ user }: { user: User }) => {
           <div className="flex justify-end">
             <Link
               className="font-bold text-right text-slate-800 text-2xl"
-              to={""}
+              to={`/${user.handle}`}
               target="_blank"
               rel="noreferrer noopener"
             >
