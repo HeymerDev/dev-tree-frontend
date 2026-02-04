@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import api from "../config/axios";
-import type { EditProfileResponse, User } from "../types";
+import type { EditProfileResponse, PublicUser, User } from "../types";
 
 export const getUser = async () => {
   try {
@@ -15,7 +15,7 @@ export const getUser = async () => {
 
 export const getUserByHandle = async (handle: string) => {
   try {
-    const { data } = await api.get<User>(`/${handle}`);
+    const { data } = await api.get<PublicUser>(`/${handle}`);
     return data;
   } catch (error) {
     if (isAxiosError(error)) {

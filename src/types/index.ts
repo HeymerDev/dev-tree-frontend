@@ -8,6 +8,8 @@ export type User = {
   links: string;
 };
 
+export type PublicUser = Omit<User, "email" | "_id">;
+
 export type RegisterFormData = Pick<User, "username" | "email" | "handle"> & {
   password: string;
   password_confirmation: string;
