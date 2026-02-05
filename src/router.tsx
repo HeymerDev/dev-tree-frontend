@@ -7,11 +7,12 @@ import Profile from "./pages/app/Profile";
 import LinkTree from "./pages/app/LinkTree";
 import { PublicView } from "./pages/publics/Profile";
 import { NotFound } from "./pages/publics/NotFound";
+import { Home } from "./pages/publics/Home";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello World</div>,
+    element: <Home />,
   },
   {
     path: "/auth",

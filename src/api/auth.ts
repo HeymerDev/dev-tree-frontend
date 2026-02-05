@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 export const registerUser = async (
   formData: RegisterFormData,
-  reset: () => void
+  reset: () => void,
 ) => {
   try {
     const {
@@ -27,6 +27,7 @@ export const loginUser = async (formData: LoginFormData) => {
       data: { token },
     } = await api.post(`/auth/login`, formData);
     localStorage.setItem("AUTH_TOKEN", token);
+    navigte;
   } catch (error) {
     if (isAxiosError(error)) {
       toast.error(error.response?.data.message);
