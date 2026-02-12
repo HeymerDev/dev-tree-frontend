@@ -1,3 +1,4 @@
+import { SearchForm } from "../../components/forms/SearchForm";
 import { Header } from "../../components/navigation/Header";
 
 export const Home = () => {
@@ -16,6 +17,7 @@ export const Home = () => {
               Unete a mas de 100 mil developers compartiendo sus redes Sociales,
               proyectos, portafolios, Github, Linkedin y mas en un solo enlace.
             </p>
+            <SearchForm />
           </div>
         </div>
       </main>
