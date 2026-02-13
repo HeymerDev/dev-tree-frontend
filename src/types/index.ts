@@ -33,3 +33,7 @@ export type SocialNetwork = {
 };
 
 export type DevTreeLink = Omit<SocialNetwork, "id">;
+
+export type ResponseSearchHandle = {
+  message: string;
+};
