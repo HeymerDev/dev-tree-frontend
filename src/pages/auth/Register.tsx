@@ -1,17 +1,24 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { ErrorMessage } from "../../components/messages/ErrorMessge";
 import type { RegisterFormData } from "../../types";
 import { registerUser } from "../../api/auth";
 
 const Register = () => {
+  const location = useLocation();
+  const handle = location.state?.handle || "";
+
   const {
     register,
     watch,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<RegisterFormData>();
+  } = useForm<RegisterFormData>({
+    defaultValues: {
+      handle,
+    },
+  });
 
   const handleRegister = async (formData: RegisterFormData) => {
     await registerUser(formData, reset);

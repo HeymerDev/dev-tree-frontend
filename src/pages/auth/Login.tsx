@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ErrorMessage } from "../../components/messages/ErrorMessge";
 import type { LoginFormData } from "../../types";
 import { loginUser } from "../../api/auth";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -12,7 +14,11 @@ const Login = () => {
   } = useForm<LoginFormData>();
 
   const handleLogin = async (formData: LoginFormData) => {
-    await loginUser(formData);
+    const success = await loginUser(formData);
+
+    if (success) {
+      navigate("/app");
+    }
   };
 
   return (

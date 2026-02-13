@@ -16,8 +16,10 @@ export const Header = () => {
 
   const logout = () => {
     localStorage.removeItem("AUTH_TOKEN");
-    queryClient.removeQueries({ queryKey: ["user"] });
+    queryClient.setQueryData(["user"], null);
+    queryClient.invalidateQueries({ queryKey: ["user"] });
   };
+
   return (
     <header className="bg-slate-800 py-5">
       <div className="mx-auto max-w-5xl flex flex-col md:flex-row items-center md:justify-between">
@@ -44,7 +46,7 @@ export const Header = () => {
 
               <button
                 className=" bg-lime-500 p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer"
-                onClick={() => {}}
+                onClick={logout}
               >
                 Cerrar Sesión
               </button>

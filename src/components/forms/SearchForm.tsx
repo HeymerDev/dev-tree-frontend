@@ -53,7 +53,10 @@ export const SearchForm = () => {
         {mutation.isSuccess && (
           <p className="text-green-500 text-center font-bold">
             {mutation.data!.message} ir a
-            <Link to={"/auth/register"}> Registro</Link>
+            <Link to={"/auth/register"} state={{ handle: slugify(handle) }}>
+              {" "}
+              Registro
+            </Link>
           </p>
         )}
         {mutation.isError && (

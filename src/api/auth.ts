@@ -27,10 +27,13 @@ export const loginUser = async (formData: LoginFormData) => {
       data: { token },
     } = await api.post(`/auth/login`, formData);
     localStorage.setItem("AUTH_TOKEN", token);
-    navigte;
+
+    return true;
   } catch (error) {
     if (isAxiosError(error)) {
       toast.error(error.response?.data.message);
     }
   }
+
+  return false;
 };
