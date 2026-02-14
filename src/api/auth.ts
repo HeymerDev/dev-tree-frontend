@@ -33,7 +33,6 @@ export const loginUser = async (formData: LoginFormData) => {
     if (isAxiosError(error)) {
       toast.error(error.response?.data.message);
     }
+    return false;
   }
-
-  return false;
 };

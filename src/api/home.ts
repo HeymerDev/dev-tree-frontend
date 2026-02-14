@@ -7,7 +7,6 @@ export const searchByHandle = async (handle: string) => {
     const { data } = await api.post<ResponseSearchHandle>(`/search`, {
       handle,
     });
-    console.log(data);
     return data;
   } catch (error) {
     if (isAxiosError(error)) {

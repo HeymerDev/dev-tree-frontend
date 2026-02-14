@@ -16,8 +16,13 @@ const Login = () => {
   const handleLogin = async (formData: LoginFormData) => {
     const success = await loginUser(formData);
 
+    console.log(success);
+
     if (success) {
-      navigate("/app");
+      // Espera a que el token se guarde en localStorage
+      setTimeout(() => {
+        navigate("/app");
+      }, 100);
     }
   };
 
