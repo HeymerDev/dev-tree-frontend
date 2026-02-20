@@ -8,6 +8,7 @@ import LinkTree from "./pages/app/LinkTree";
 import { PublicView } from "./pages/publics/Profile";
 import { NotFound } from "./pages/publics/NotFound";
 import { Home } from "./pages/publics/Home";
+import PublicLayout from "./layouts/PublicLayout";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/:handle",
-    element: <AuthLayout />,
+    element: <PublicLayout />,
     children: [
       {
         index: true,
